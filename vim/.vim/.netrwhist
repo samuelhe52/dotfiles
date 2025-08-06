@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/Users/samuelhe/.oh-my-zsh'
+let g:netrw_dirhist_8='/Users/samuelhe/.tldrc'
+let g:netrw_dirhist_7='/Users/samuelhe/.vim'
+let g:netrw_dirhist_6='/Users/samuelhe/Desktop/App bck'
+let g:netrw_dirhist_5='/Users/samuelhe/.config/clash/userconfig/.git'
+let g:netrw_dirhist_4='/Users/samuelhe/MyAnimeList/.git'
+let g:netrw_dirhist_3='/Users/samuelhe/Learn_Swift/Fluid Gradient Composer/Fluid Gradient Composer'
+let g:netrw_dirhist_2='/Users/samuelhe/.vim'
+let g:netrw_dirhist_1='/Users/samuelhe/Desktop'
