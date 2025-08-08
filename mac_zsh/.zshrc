@@ -154,3 +154,4 @@ unset_proxy() {
 	echo "Proxies unset"
 	}
 
+alias gs="git status"
