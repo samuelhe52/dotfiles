@@ -37,3 +37,12 @@ nmap Q <Nop> " 'Q' in normal mode enters Ex mode. You almost never want this.
 " Enable mouse support. You should avoid relying on this too much, but it can
 " sometimes be convenient.
 set mouse+=a
+
+call plug#begin()
+
+" List your plugins here
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'easymotion/vim-easymotion'
+
+call plug#end()
