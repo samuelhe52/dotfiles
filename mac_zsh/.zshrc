@@ -154,4 +154,5 @@ unset_proxy() {
 	echo "Proxies unset"
 	}
 
-alias gs="git status"
+[ -f ~/.aliases ] && source ~/.aliases
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
