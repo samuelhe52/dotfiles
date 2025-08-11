@@ -3,5 +3,3 @@
 	email = samuelhe52@outlook.com
 [init]
 	defaultBranch = main
-[pager]
-	log = false
