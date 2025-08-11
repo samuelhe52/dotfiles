@@ -1,0 +1,7 @@
+[user]
+	name = Samuel He
+	email = samuelhe52@outlook.com
+[init]
+	defaultBranch = main
+[pager]
+	log = false
