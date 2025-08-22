@@ -3,3 +3,5 @@
 	email = samuelhe52@outlook.com
 [init]
 	defaultBranch = main
+[merge]
+	tool = vimdiff
