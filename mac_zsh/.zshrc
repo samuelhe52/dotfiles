@@ -159,3 +159,5 @@ unset_proxy() {
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && enable-fzf-tab
+
+bindkey -v

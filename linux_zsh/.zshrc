@@ -138,3 +138,5 @@ unset_proxy() {
 [ -f ~/.aliases ] && source ~/.aliases
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && enable-fzf-tab
+
+bindkey -v
