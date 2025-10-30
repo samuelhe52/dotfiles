@@ -1,3 +1,5 @@
 alias gs='git status'
 alias glp='git log --all --graph --decorate --oneline'
 alias glpl='git log --all --graph --decorate'
+alias coc='copilot --continue'
+alias cor='copilot --resume'
