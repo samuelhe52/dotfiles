@@ -164,4 +164,6 @@ unset_proxy() {
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && enable-fzf-tab
 
+[ -f ~/.apikeys ] && source ~/.apikeys
+
 bindkey -v
