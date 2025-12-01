@@ -1,0 +1,5 @@
+.mode box
+.nullvalue NULL
+.timer on
+PRAGMA foreign_keys = ON;
+
