@@ -167,5 +167,9 @@ unset_proxy() {
 [ -f ~/.apikeys ] && source ~/.apikeys
 
 bindkey -v
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
 
 export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
+
