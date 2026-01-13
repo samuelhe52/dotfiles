@@ -4,3 +4,7 @@ alias glpl='git log --all --graph --decorate'
 alias coc='copilot --continue'
 alias cor='copilot --resume'
 alias python='python3'
+alias la='eza -Al'
+alias ll='eza -l'
+alias ls='eza --group-directories-first'
+
