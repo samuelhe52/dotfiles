@@ -140,3 +140,5 @@ unset_proxy() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh && enable-fzf-tab
 
 bindkey -v
+
+. "$HOME/.local/bin/env"
