@@ -24,6 +24,7 @@ return {
     },
     config = function(_, opts)
       local toggleterm = require("toggleterm")
+      local toggleterm_ui = require("toggleterm.ui")
       local terms = require("toggleterm.terminal")
       local Terminal = terms.Terminal
       local python_env = require("config.python")
@@ -43,8 +44,18 @@ return {
         return ids
       end
 
-      local function close_all_open_terminals()
-        toggleterm.toggle_all()
+      local function is_toggleterm_buffer(buf)
+        return vim.bo[buf].filetype == "toggleterm" or vim.b[buf].toggle_number ~= nil
+      end
+
+      local function close_open_terminal_windows()
+        local _, open_windows = toggleterm_ui.find_open_windows()
+        for _, window in ipairs(open_windows) do
+          local term = terms.get(window.term_id, true)
+          if term and term:is_open() then
+            term:close()
+          end
+        end
       end
 
       local function last_file_buffer_path()
@@ -109,7 +120,7 @@ return {
 
       local function open_terminal(id)
         local existing = terms.get(id, true)
-        close_all_open_terminals()
+        close_open_terminal_windows()
         current = id
         if existing then
           existing:open()
@@ -165,6 +176,27 @@ return {
         open_terminal(ids[next_position])
       end
 
+      local function nearby_terminal_id()
+        local ids = terminal_ids()
+        if #ids <= 1 then
+          return nil
+        end
+
+        local position = nil
+        for i, id in ipairs(ids) do
+          if id == current then
+            position = i
+            break
+          end
+        end
+
+        if not position then
+          return ids[1]
+        end
+
+        return ids[position + 1] or ids[position - 1]
+      end
+
       local function terminal_label(term)
         local name = term.display_name or term.name or ("term-" .. term.id)
         local marker = term.id == current and "*" or " "
@@ -192,19 +224,19 @@ return {
         end)
       end
 
-      local function kill_current_terminal()
+      local function close_current_terminal()
         local term = terms.get(current, true)
         if not term then
           return
         end
 
+        local next_id = nearby_terminal_id()
         term:shutdown()
 
-        local ids = terminal_ids()
-        if #ids == 0 then
+        if not next_id then
           current = 1
         else
-          current = ids[1]
+          open_terminal(next_id)
         end
       end
 
@@ -310,11 +342,50 @@ return {
         opts = opts or {}
         return function()
           sync_current_terminal_from_buffer()
-          vim.cmd("stopinsert")
+          if vim.api.nvim_get_mode().mode == "t" then
+            vim.cmd("stopinsert")
+          end
           action()
-          if opts.enter_insert then
+          if opts.enter_insert and is_toggleterm_buffer(vim.api.nvim_get_current_buf()) then
             vim.cmd("startinsert")
           end
+        end
+      end
+
+      local function install_terminal_prefix_maps(modes, buffer)
+        local opts = {
+          buffer = buffer,
+          silent = true,
+        }
+
+        vim.keymap.set(modes, "<C-a>h", terminal_command(function()
+          cycle_terminal(-1)
+        end, { enter_insert = true }), vim.tbl_extend("force", { desc = "Previous Terminal" }, opts))
+        vim.keymap.set(modes, "<C-a>l", terminal_command(function()
+          cycle_terminal(1)
+        end, { enter_insert = true }), vim.tbl_extend("force", { desc = "Next Terminal" }, opts))
+        vim.keymap.set(modes, "<C-a>n", terminal_command(function()
+          open_terminal(next_terminal_id())
+        end, { enter_insert = true }), vim.tbl_extend("force", { desc = "Create Terminal" }, opts))
+        vim.keymap.set(modes, "<C-a>i", terminal_command(select_terminal), vim.tbl_extend("force", { desc = "Inspect Terminals" }, opts))
+        vim.keymap.set(modes, "<C-a>x", terminal_command(close_current_terminal, { enter_insert = true }), vim.tbl_extend("force", { desc = "Close Terminal" }, opts))
+        vim.keymap.set(modes, "<C-a>p", terminal_command(open_python_terminal, { enter_insert = true }), vim.tbl_extend("force", { desc = "Python Terminal" }, opts))
+        vim.keymap.set(modes, "<C-a>`", terminal_command(toggle_current_terminal, { enter_insert = true }), vim.tbl_extend("force", { desc = "Toggle Terminal" }, opts))
+      end
+
+      local terminal_prefix_group = vim.api.nvim_create_augroup("ToggleTermPrefixMaps", { clear = true })
+      vim.api.nvim_create_autocmd("TermOpen", {
+        group = terminal_prefix_group,
+        callback = function(event)
+          if is_toggleterm_buffer(event.buf) then
+            install_terminal_prefix_maps({ "n", "v" }, event.buf)
+          end
+        end,
+      })
+
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) and is_toggleterm_buffer(buf) then
+          install_terminal_prefix_maps({ "n", "v" }, buf)
         end
       end
 
@@ -327,20 +398,7 @@ return {
       end, { desc = "Toggle Terminal" })
       vim.keymap.set("n", "<leader>tt", toggle_current_terminal, { desc = "Toggle Terminal" })
       vim.keymap.set("n", "<leader>rp", run_python_buffer, { desc = "Run Python Buffer" })
-
-      vim.keymap.set("t", "<C-a>h", terminal_command(function()
-        cycle_terminal(-1)
-      end, { enter_insert = true }), { desc = "Previous Terminal" })
-      vim.keymap.set("t", "<C-a>l", terminal_command(function()
-        cycle_terminal(1)
-      end, { enter_insert = true }), { desc = "Next Terminal" })
-      vim.keymap.set("t", "<C-a>n", terminal_command(function()
-        open_terminal(next_terminal_id())
-      end, { enter_insert = true }), { desc = "Create Terminal" })
-      vim.keymap.set("t", "<C-a>i", terminal_command(select_terminal), { desc = "Inspect Terminals" })
-      vim.keymap.set("t", "<C-a>x", terminal_command(kill_current_terminal), { desc = "Kill Terminal" })
-      vim.keymap.set("t", "<C-a>p", terminal_command(open_python_terminal, { enter_insert = true }), { desc = "Python Terminal" })
-      vim.keymap.set("t", "<C-a>`", terminal_command(toggle_current_terminal, { enter_insert = true }), { desc = "Toggle Terminal" })
+      install_terminal_prefix_maps("t")
     end,
   },
 }

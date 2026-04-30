@@ -5,6 +5,13 @@ return {
     "folke/snacks.nvim",
     keys = {
       {
+        "<leader><space>",
+        function()
+          Snacks.picker.git_files({ untracked = true })
+        end,
+        desc = "Find Files (git + hidden)",
+      },
+      {
         "<leader>e",
         function()
           local picker = Snacks.picker.get({ source = "explorer", tab = false })[1]
