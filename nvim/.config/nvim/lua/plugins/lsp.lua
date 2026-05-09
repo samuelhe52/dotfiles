@@ -43,11 +43,14 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      inlay_hints = {
+    opts = function(_, opts)
+      opts.inlay_hints = {
         enabled = false,
-      },
-      servers = {
+      }
+      opts.servers = opts.servers or {}
+      opts.setup = opts.setup or {}
+
+      opts.servers = vim.tbl_deep_extend("force", opts.servers, {
         java_language_server = {
           enabled = false,
         },
@@ -120,17 +123,21 @@ return {
         },
         sourcekit = {
           cmd = { vim.trim(vim.fn.system("xcrun -f sourcekit-lsp")) },
+          cmd_env = {
+            DEVELOPER_DIR = "/Applications/Xcode.app/Contents/Developer",
+          },
           filetypes = { "swift" },
-          root_markers = { "buildServer.json", ".bsp", ".git" },
         },
         taplo = {},
-      },
-      setup = {
+      })
+      opts.setup = vim.tbl_deep_extend("force", opts.setup, {
         clangd = function(_, opts)
           opts.capabilities = opts.capabilities or {}
           opts.capabilities.offsetEncoding = { "utf-16" }
         end,
-      },
-    },
+      })
+
+      return opts
+    end,
   },
 }
