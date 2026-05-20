@@ -113,11 +113,14 @@ return {
               analysis = {
                 typeCheckingMode = "off",
                 autoImportCompletions = true,
+                reportUnusedImport = "none",
+                reportUnusedVariable = "none",
+                reportDuplicateImport = "none",
               },
             },
           },
           handlers = {
-            -- Keep pyright available for navigation/completion, but suppress its live diagnostics UI.
+            -- Keep pyright available for navigation/completion, but suppress diagnostics Ruff already covers.
             ["textDocument/publishDiagnostics"] = function() end,
           },
         },
