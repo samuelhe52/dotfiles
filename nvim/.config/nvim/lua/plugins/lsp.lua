@@ -8,6 +8,7 @@ return {
         "copilot-language-server",
         "google-java-format",
         "prettier",
+        "rust-analyzer",
         "shfmt",
         "stylua",
         "taplo",
@@ -29,6 +30,7 @@ return {
       opts.formatters_by_ft.java = { "google-java-format" }
       opts.formatters_by_ft.lua = { "stylua" }
       opts.formatters_by_ft.python = { "ruff_format" }
+      opts.formatters_by_ft.rust = { "rustfmt" }
       opts.formatters_by_ft.sh = { "shfmt" }
       opts.formatters_by_ft.bash = { "shfmt" }
       opts.formatters_by_ft.zsh = { "shfmt" }
@@ -122,6 +124,19 @@ return {
           handlers = {
             -- Keep pyright available for navigation/completion, but suppress diagnostics Ruff already covers.
             ["textDocument/publishDiagnostics"] = function() end,
+          },
+        },
+        rust_analyzer = {
+          settings = {
+            ["rust-analyzer"] = {
+              cargo = {
+                allFeatures = true,
+              },
+              checkOnSave = true,
+              check = {
+                command = "clippy",
+              },
+            },
           },
         },
         sourcekit = {
