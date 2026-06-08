@@ -16,5 +16,6 @@ vim/.vim/plugged
 vim/.vim/undodir
 vim/.vim/spell
 vim/.vim/.netrwhist
+nvim/.config/nvim/lazy-lock.json
 dotfile_bk_*
 todo.md
