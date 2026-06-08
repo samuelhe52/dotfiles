@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # If you come from bash you might have to change your $PATH.
@@ -123,15 +123,15 @@ export LANG=en_US.UTF-8
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/samuelhe/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/Users/samuelhe/miniconda3/bin/conda' 'shell.zsh' 'hook' 2>/dev/null)"
 if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+  eval "$__conda_setup"
 else
-    if [ -f "/Users/samuelhe/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/samuelhe/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/samuelhe/miniconda3/bin:$PATH"
-    fi
+  if [ -f "/Users/samuelhe/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "/Users/samuelhe/miniconda3/etc/profile.d/conda.sh"
+  else
+    export PATH="/Users/samuelhe/miniconda3/bin:$PATH"
+  fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
@@ -140,26 +140,25 @@ unset __conda_setup
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 bindkey "^U" backward-kill-line
 
-
 set_proxy() {
-    export http_proxy="http://127.0.0.1:7890"
-    export https_proxy="http://127.0.0.1:7890"
-    export all_proxy="socks5://127.0.0.1:7890"
-    export HTTP_PROXY="http://127.0.0.1:7890"
-    export HTTPS_PROXY="http://127.0.0.1:7890"
-    export ALL_PROXY="socks5://127.0.0.1:7890"
-    echo "Proxy set to 127.0.0.1:7890"
-    }
+  export http_proxy="http://127.0.0.1:7890"
+  export https_proxy="http://127.0.0.1:7890"
+  export all_proxy="socks5://127.0.0.1:7890"
+  export HTTP_PROXY="http://127.0.0.1:7890"
+  export HTTPS_PROXY="http://127.0.0.1:7890"
+  export ALL_PROXY="socks5://127.0.0.1:7890"
+  echo "Proxy set to 127.0.0.1:7890"
+}
 
-unset_proxy() { 
-	unset http_proxy
-	unset https_proxy
-	unset all_proxy
-	unset HTTP_PROXY
-	unset HTTPS_PROXY
-	unset ALL_PROXY
-	echo "Proxies unset"
-	}
+unset_proxy() {
+  unset http_proxy
+  unset https_proxy
+  unset all_proxy
+  unset HTTP_PROXY
+  unset HTTPS_PROXY
+  unset ALL_PROXY
+  echo "Proxies unset"
+}
 
 [ -f ~/.aliases ] && source ~/.aliases
 
@@ -180,3 +179,9 @@ bindkey '^x^e' edit-command-line
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# MacOS-specific aliases
+alias vim='nvim'
+alias la='eza -Al'
+alias ll='eza -l'
+alias ls='eza --group-directories-first'
