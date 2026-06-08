@@ -46,6 +46,21 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
+      local lspconfig_util = require("lspconfig.util")
+
+      local function sourcekit_root_dir(bufnr, on_dir)
+        local filename = vim.api.nvim_buf_get_name(bufnr)
+        local package_root = vim.fs.find("Package.swift", { path = filename, upward = true })[1]
+
+        on_dir(
+          package_root and vim.fs.dirname(package_root)
+            or lspconfig_util.root_pattern("buildServer.json", ".bsp")(filename)
+            or lspconfig_util.root_pattern("*.xcodeproj", "*.xcworkspace")(filename)
+            or lspconfig_util.root_pattern("compile_commands.json")(filename)
+            or vim.fs.dirname(vim.fs.find(".git", { path = filename, upward = true })[1])
+        )
+      end
+
       opts.inlay_hints = {
         enabled = false,
       }
@@ -145,6 +160,7 @@ return {
             DEVELOPER_DIR = "/Applications/Xcode.app/Contents/Developer",
           },
           filetypes = { "swift" },
+          root_dir = sourcekit_root_dir,
         },
         taplo = {},
       })
