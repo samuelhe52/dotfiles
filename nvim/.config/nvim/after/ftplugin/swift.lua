@@ -18,11 +18,6 @@ local function restore_option(buf, name, value)
 end
 
 local function swift_enter()
-  local blink = package.loaded["blink.cmp"] and require("blink.cmp") or nil
-  if blink and blink.accept() then
-    return ""
-  end
-
   local cursor = vim.api.nvim_win_get_cursor(0)
   local line = vim.api.nvim_get_current_line()
   local col = cursor[2]
