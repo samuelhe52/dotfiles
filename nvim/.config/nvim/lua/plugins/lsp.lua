@@ -155,10 +155,7 @@ return {
           },
         },
         sourcekit = {
-          cmd = { vim.trim(vim.fn.system("xcrun -f sourcekit-lsp")) },
-          cmd_env = {
-            DEVELOPER_DIR = "/Applications/Xcode.app/Contents/Developer",
-          },
+          cmd = { "/usr/bin/xcrun", "sourcekit-lsp" },
           filetypes = { "swift" },
           root_dir = sourcekit_root_dir,
         },
