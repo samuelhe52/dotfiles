@@ -2,7 +2,6 @@ alias gs='git status'
 alias glp='git log --all --graph --decorate --oneline'
 alias glpl='git log --all --graph --decorate'
 alias copilot='copilot --yolo'
-alias claude='claude --dangerously-skip-permissions'
 alias codex='codex --yolo'
 alias ff='fastfetch'
 
