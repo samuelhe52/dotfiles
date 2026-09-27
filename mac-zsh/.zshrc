@@ -108,7 +108,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 export PATH=$PATH:/usr/local/sbin
 export PATH="/opt/homebrew/opt/ruby@3.2/bin:$PATH"
-export PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-tar/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"
@@ -180,6 +179,9 @@ bindkey '^x^e' edit-command-line
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# Prefer uv-installed command-line tools over same-named global Python tools.
+export PATH="/Users/samuelhe/.local/bin:$PATH"
+
 # Cargo
 export PATH="$HOME/.cargo/bin:$PATH"
 
@@ -191,13 +193,13 @@ alias ls='eza --group-directories-first'
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba shell init' !!
-export MAMBA_EXE='/Users/samuelhe/miniforge3/bin/mamba';
-export MAMBA_ROOT_PREFIX='/Users/samuelhe/miniforge3';
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+export MAMBA_EXE='/Users/samuelhe/miniforge3/bin/mamba'
+export MAMBA_ROOT_PREFIX='/Users/samuelhe/miniforge3'
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2>/dev/null)"
 if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
+  eval "$__mamba_setup"
 else
-    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+  alias mamba="$MAMBA_EXE" # Fallback on help from mamba activate
 fi
 unset __mamba_setup
 # <<< mamba initialize <<<

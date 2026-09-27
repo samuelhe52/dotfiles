@@ -142,10 +142,21 @@ return {
           },
         },
         rust_analyzer = {
+          on_attach = function(client, bufnr)
+            if client.server_capabilities.semanticTokensProvider then
+              vim.lsp.semantic_tokens.enable(true, { bufnr = bufnr, client_id = client.id })
+            end
+          end,
           settings = {
             ["rust-analyzer"] = {
               cargo = {
                 allFeatures = true,
+              },
+              semanticHighlighting = {
+                nonStandardTokens = true,
+                strings = {
+                  enable = true,
+                },
               },
               checkOnSave = true,
               check = {
